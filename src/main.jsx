@@ -8,6 +8,7 @@ import Contact from "./Routes/Contacts";
 import { getContactLoader, getContactsLoader } from "./loaders/contactsLoader";
 import {
   EditContactAction,
+  contactFavoriteAction,
   createContactAction,
   deleteContactAction,
 } from "./actions/conatctAction";
@@ -21,28 +22,34 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     loader: getContactsLoader, // Loader load Data from API
     action: createContactAction, // Action handle Form action(submit)
-    children: [
+    children:[
       {
-        index: true,
-        element: <Index />,
-      },
-      {
-        path: "contacts/:contactId",
-        element: <Contact />,
-        loader: getContactLoader,
-      },
-      {
-        path: "contacts/:contactId/edit",
-        element: <EditContact />,
-        loader: getContactLoader,
-        action: EditContactAction,
-      },
-      {
-        path: "contacts/:contactId/destroy",
-        action: deleteContactAction,
-        errorElement: <div>Oops! There was an error.</div>,
-      },
-    ],
+        errorElement:<ErrorPage/>,
+        children: [
+          {
+            index: true,
+            element: <Index />,
+          },
+          {
+            path: "contacts/:contactId",
+            element: <Contact />,
+            loader: getContactLoader,
+            action:contactFavoriteAction,
+          },
+          {
+            path: "contacts/:contactId/edit",
+            element: <EditContact />,
+            loader: getContactLoader,
+            action: EditContactAction,
+          },
+          {
+            path: "contacts/:contactId/destroy",
+            action: deleteContactAction,
+            errorElement: <div>Oops! There was an error.</div>,
+          },
+        ],
+      }
+    ]
   },
 ]);
 
